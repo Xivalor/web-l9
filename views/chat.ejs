@@ -6,7 +6,6 @@
     <title><%= title %></title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        /* ──── Чат ──── */
         .chat-wrapper {
             display: flex;
             gap: 20px;
@@ -16,7 +15,6 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Панель участников */
         .sidebar {
             width: 200px;
             flex-shrink: 0;
@@ -45,7 +43,6 @@
             content: "🟢 ";
         }
 
-        /* Основное окно чата */
         .chat-main {
             flex: 1;
             display: flex;
@@ -57,7 +54,6 @@
             color: #222;
         }
 
-        /* Форма входа */
         #join-form {
             display: flex;
             gap: 10px;
@@ -81,7 +77,6 @@
         }
         #join-form button:hover { background: #b8962e; }
 
-        /* Лента сообщений */
         #messages {
             flex: 1;
             height: 360px;
@@ -128,7 +123,6 @@
             padding: 2px 0;
         }
 
-        /* Индикатор набора */
         #typing-indicator {
             min-height: 22px;
             font-size: 13px;
@@ -146,7 +140,6 @@
             66%  { content: '...'; }
         }
 
-        /* Поле ввода */
         #message-form {
             display: flex;
             gap: 10px;
@@ -190,29 +183,23 @@
 </head>
 <body>
     <div class="chat-wrapper">
-        <!-- Список участников -->
         <div class="sidebar">
             <h3>Участники</h3>
             <ul id="user-list"></ul>
         </div>
 
-        <!-- Основная область чата -->
         <div class="chat-main">
             <h2>💬 <%= title %></h2>
 
-            <!-- Форма ввода имени -->
             <div id="join-form">
                 <input type="text" id="username-input" placeholder="Ваше имя..." maxlength="30">
                 <button id="join-btn">Войти в чат</button>
             </div>
 
-            <!-- Лента сообщений -->
             <div id="messages"></div>
 
-            <!-- Индикатор набора текста -->
             <div id="typing-indicator"></div>
 
-            <!-- Форма отправки сообщения -->
             <div id="message-form">
                 <input type="text" id="message-input" placeholder="Введите сообщение..." maxlength="500" disabled>
                 <button id="send-btn" disabled>Отправить</button>
@@ -222,7 +209,6 @@
 
     <a href="/" class="back-link">← Вернуться на главную</a>
 
-    <!-- Socket.IO клиент (автоматически раздаётся сервером) -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/chat.js"></script>
 </body>

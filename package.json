@@ -1,7 +1,6 @@
 {
   "name": "l9",
   "version": "1.0.0",
-  "description": "Лабораторная работа №9 — WebSocket чат с Typing Indicator",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

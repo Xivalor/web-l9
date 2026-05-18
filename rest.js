@@ -8,18 +8,15 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-// Главная страница
 app.get('/', async (req, res) => {
     const products = await store.getAll();
     res.render('index', { title: 'Ювелирный магазин', products });
 });
 
-// Страница чата (Вариант 4 — Typing Indicator)
 app.get('/chat', (req, res) => {
     res.render('chat', { title: 'Чат с индикатором набора' });
 });
 
-// API Маршруты
 app.get('/api/items', async (req, res) => {
     let products = await store.getAll();
 

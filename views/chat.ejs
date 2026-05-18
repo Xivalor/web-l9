@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* ──── Чат ──── */
+        .chat-wrapper {
+            display: flex;
+            gap: 20px;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Панель участников */
+        .sidebar {
+            width: 200px;
+            flex-shrink: 0;
+        }
+        .sidebar h3 {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #user-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        #user-list li {
+            padding: 6px 10px;
+            background: #f4f4f4;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+        #user-list li::before {
+            content: "🟢 ";
+        }
+
+        /* Основное окно чата */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-main h2 {
+            margin: 0 0 15px;
+            font-size: 20px;
+            color: #222;
+        }
+
+        /* Форма входа */
+        #join-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        #join-form input {
+            flex: 1;
+            padding: 9px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        #join-form button {
+            padding: 9px 18px;
+            background: #d4af37;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #join-form button:hover { background: #b8962e; }
+
+        /* Лента сообщений */
+        #messages {
+            flex: 1;
+            height: 360px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 14px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .msg {
+            max-width: 75%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .msg.own {
+            align-self: flex-end;
+            background: #d4af37;
+            color: #fff;
+            border-bottom-right-radius: 3px;
+        }
+        .msg.other {
+            align-self: flex-start;
+            background: #e8e8e8;
+            color: #333;
+            border-bottom-left-radius: 3px;
+        }
+        .msg .meta {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-bottom: 3px;
+        }
+        .msg.system {
+            align-self: center;
+            background: transparent;
+            color: #999;
+            font-size: 12px;
+            font-style: italic;
+            padding: 2px 0;
+        }
+
+        /* Индикатор набора */
+        #typing-indicator {
+            min-height: 22px;
+            font-size: 13px;
+            color: #888;
+            font-style: italic;
+            padding: 4px 0;
+        }
+        .typing-dots::after {
+            content: '...';
+            animation: dots 1.2s steps(3, end) infinite;
+        }
+        @keyframes dots {
+            0%   { content: '.'; }
+            33%  { content: '..'; }
+            66%  { content: '...'; }
+        }
+
+        /* Поле ввода */
+        #message-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        #message-input {
+            flex: 1;
+            padding: 9px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        #message-input:disabled {
+            background: #f0f0f0;
+        }
+        #send-btn {
+            padding: 9px 18px;
+            background: #d4af37;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #send-btn:hover:not(:disabled) { background: #b8962e; }
+        #send-btn:disabled {
+            background: #ccc;
+            cursor: default;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin: 10px auto 0;
+            color: #d4af37;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="chat-wrapper">
+        <!-- Список участников -->
+        <div class="sidebar">
+            <h3>Участники</h3>
+            <ul id="user-list"></ul>
+        </div>
+
+        <!-- Основная область чата -->
+        <div class="chat-main">
+            <h2>💬 <%= title %></h2>
+
+            <!-- Форма ввода имени -->
+            <div id="join-form">
+                <input type="text" id="username-input" placeholder="Ваше имя..." maxlength="30">
+                <button id="join-btn">Войти в чат</button>
+            </div>
+
+            <!-- Лента сообщений -->
+            <div id="messages"></div>
+
+            <!-- Индикатор набора текста -->
+            <div id="typing-indicator"></div>
+
+            <!-- Форма отправки сообщения -->
+            <div id="message-form">
+                <input type="text" id="message-input" placeholder="Введите сообщение..." maxlength="500" disabled>
+                <button id="send-btn" disabled>Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="/" class="back-link">← Вернуться на главную</a>
+
+    <!-- Socket.IO клиент (автоматически раздаётся сервером) -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1><%= title %></h1>
+
+        <!-- Ссылка на чат (Лаб 9) -->
+        <div style="margin-bottom: 20px; text-align: right;">
+            <a href="/chat" style="
+                display: inline-block;
+                padding: 10px 20px;
+                background: #d4af37;
+                color: #fff;
+                border-radius: 6px;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: bold;
+            ">💬 Открыть чат</a>
+        </div>
+
+        <div class="form-box">
+            <input type="text" id="search-input" placeholder="Поиск по названию..." oninput="loadItems(1)">
+            <select id="sort-select" onchange="loadItems(1)">
+                <option value="">Без сортировки</option>
+                <option value="asc">А-Я (по возр.)</option>
+                <option value="desc">Я-А (по убыв.)</option>
+            </select>
+        </div>
+
+        <div class="form-box">
+            <form id="add-form">
+                <input type="text" id="name" placeholder="Название" required>
+                <input type="text" id="desc" placeholder="Описание" required>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+        
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <% products.forEach(p => { %>
+                    <tr id="row-<%= p.id %>">
+                        <td><%= p.id %></td>
+                        <td><%= p.name %></td>
+                        <td><%= p.description %></td>
+                        <td><button onclick="deleteItem(<%= p.id %>)">❌</button></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <div id="pagination" style="margin-top: 15px; text-align: center;"></div>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>
